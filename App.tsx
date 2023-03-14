@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,6 +19,7 @@ const MyWebView = () => {
 	const setWebViewCookieString = `(${setWebViewCookie.toString()})();`;
 
 	const getData = async () => {
+		// await AsyncStorage.setItem("cookies", "");
 		const value = await AsyncStorage.getItem("cookies");
 		if (value) setCookieString(value);
 		else setCookieString("empty");
@@ -26,6 +27,7 @@ const MyWebView = () => {
 
 	React.useEffect(() => {
 		getData();
+		AsyncStorage.setItem("cookies", "");
 	}, []);
 
 	const handleNavigationStateChange = async () => {
@@ -34,9 +36,10 @@ const MyWebView = () => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			{cookieString && (
 				<WebView
+					sharedCookiesEnabled={true}
 					mixedContentMode="always"
 					ref={webViewRef}
 					source={{ uri: "https://dtsanalpos.com/payment" }}
@@ -46,14 +49,13 @@ const MyWebView = () => {
 					injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
 				/>
 			)}
-		</View>
+		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingTop: 30,
 	},
 });
 
