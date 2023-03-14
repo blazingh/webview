@@ -2,7 +2,7 @@
   "expo": {
     "name": "dtsanalpos",
     "slug": "dtsanalpos",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -15,14 +15,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.distedavim.dtsanalpos"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.distedavim.dtsanalpos"
+      "package": "com.distedavim.dtsanalpos",
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/app-icon.png"
