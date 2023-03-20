@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "react-native";
 
 const MyWebView = () => {
 	const webViewRef = React.useRef<WebView>(null);
@@ -36,20 +37,23 @@ const MyWebView = () => {
 	};
 
 	return (
-		<SafeAreaView style={styles.container}>
-			{cookieString && (
-				<WebView
-					sharedCookiesEnabled={true}
-					mixedContentMode="always"
-					ref={webViewRef}
-					source={{ uri: "https://dtsanalpos.com/payment" }}
-					onMessage={handleWebViewLoad}
-					onNavigationStateChange={handleNavigationStateChange}
-					onShouldStartLoadWithRequest={() => true}
-					injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
-				/>
-			)}
-		</SafeAreaView>
+		<>
+			<StatusBar backgroundColor="#7256E9" />
+			<SafeAreaView style={styles.container}>
+				{cookieString && (
+					<WebView
+						sharedCookiesEnabled={true}
+						mixedContentMode="always"
+						ref={webViewRef}
+						source={{ uri: "https://dtsanalpos.com/payment" }}
+						onMessage={handleWebViewLoad}
+						onNavigationStateChange={handleNavigationStateChange}
+						onShouldStartLoadWithRequest={() => true}
+						injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
+					/>
+				)}
+			</SafeAreaView>
+		</>
 	);
 };
 
