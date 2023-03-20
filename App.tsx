@@ -20,7 +20,6 @@ const MyWebView = () => {
 	const setWebViewCookieString = `(${setWebViewCookie.toString()})();`;
 
 	const getData = async () => {
-		// await AsyncStorage.setItem("cookies", "");
 		const value = await AsyncStorage.getItem("cookies");
 		if (value) setCookieString(value);
 		else setCookieString("empty");
@@ -28,7 +27,6 @@ const MyWebView = () => {
 
 	React.useEffect(() => {
 		getData();
-		AsyncStorage.setItem("cookies", "");
 	}, []);
 
 	const handleNavigationStateChange = async () => {
