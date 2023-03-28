@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, Text, Alert, Platform } from "react-native";
+import {
+	StyleSheet,
+	SafeAreaView,
+	Alert,
+	Platform,
+	Linking,
+} from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "react-native";
@@ -44,13 +50,19 @@ const MyWebView = () => {
 	useEffect(() => {
 		if (!latestVersion) return;
 		if (latestVersion === Application.nativeApplicationVersion) return;
-		Alert.alert("New Version", "A new Version of the app is avaible", [
+		Alert.alert("Yeni sürüm", "Uygulama için yeni sürüm mevcut", [
 			{
-				text: "Update Later",
-				onPress: () => console.log("Cancel Pressed"),
+				text: "Sonra güncelle",
+				onPress: () => console.log("Canceled update"),
 				style: "cancel",
 			},
-			{ text: "Update", onPress: () => console.log("OK Pressed") },
+			{
+				text: "Şimdi güncelle",
+				onPress: () =>
+					Linking.openURL(
+						"https://apps.apple.com/tr/app/dtsanalpos/id6446242806?l=tr",
+					),
+			},
 		]);
 	}, [latestVersion]);
 
@@ -62,8 +74,6 @@ const MyWebView = () => {
 	return (
 		<>
 			<StatusBar backgroundColor="#7256E9" />
-			<Text>{Application.nativeApplicationVersion}</Text>
-			<Text>{latestVersion}</Text>
 			<SafeAreaView style={styles.container}>
 				{cookieString && (
 					<WebView
