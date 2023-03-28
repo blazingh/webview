@@ -1,37 +1,39 @@
 {
-	"expo": {
-		"name": "dtsanalpos",
-		"slug": "dtsanalpos",
-		"version": "1.0.5",
-		"orientation": "portrait",
-		"icon": "./assets/app-icon.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/dtsplash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.distedavim.dtsanalpos",
-			"buildNumber": "5"
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/app-icon.png",
-				"backgroundColor": "#ffffff"
-			},
-			"package": "com.distedavim.dtsanalpos",
-			"versionCode": 6
-		},
-		"web": {
-			"favicon": "./assets/app-icon.png"
-		},
-		"extra": {
-			"eas": {
-				"projectId": "0b9fb294-fc46-4532-a313-bcdd8069b95a"
-			}
-		}
-	}
+  "expo": {
+    "name": "dtsanalpos",
+    "slug": "dtsanalpos",
+    "version": "1.0.6",
+    "orientation": "portrait",
+    "icon": "./assets/app-icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/dtsplash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.distedavim.dtsanalpos",
+      "buildNumber": "10"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.distedavim.dtsanalpos",
+      "versionCode": 8
+    },
+    "web": {
+      "favicon": "./assets/app-icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0b9fb294-fc46-4532-a313-bcdd8069b95a"
+      }
+    }
+  }
 }
