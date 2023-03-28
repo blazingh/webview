@@ -73,7 +73,12 @@ const MyWebView = () => {
 
 	return (
 		<>
-			<StatusBar backgroundColor="#7256E9" />
+			<StatusBar
+				backgroundColor="#7256E9"
+				hidden
+				showHideTransition="slide"
+				animated
+			/>
 			<SafeAreaView style={styles.container}>
 				{cookieString && (
 					<WebView
