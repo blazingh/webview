@@ -71,41 +71,32 @@ const MyWebView = () => {
 		webViewRef.current?.injectJavaScript(webViewScript);
 	};
 
-	const handleWebViewError = (error: any) => {
-		// Check if error is a 419 error
-		if (error.statusCode == 419) {
-			// clear the cookies
-			webViewRef.current?.injectJavaScript(`
-			document.cookie.split(';').forEach(function(c) {
-				document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-			});
-			`);
-		}
-
-		// Check if error is a 4xx error
-		if (error.statusCode >= 400 && error.statusCode < 500) {
-			// Redirect to another page
-			webViewRef.current?.injectJavaScript(`
-			window.location.href = 'https://dtsanalpos.com/payment';
-		  	`);
-		}
+	const handleWebViewError = () => {
+		webViewRef.current?.injectJavaScript(`
+		document.cookie.split(';').forEach(function(c) {
+			document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+		});
+		`);
+		webViewRef.current?.injectJavaScript(`
+		window.location.href = 'https://dtsanalpos.com';
+		  `);
 	};
 
 	return (
 		<>
-			<StatusBar
-				backgroundColor="#7256E9"
-				hidden
-				showHideTransition="slide"
-				animated
-			/>
 			<SafeAreaView style={styles.container}>
+				<StatusBar
+					backgroundColor="#7256E9"
+					hidden
+					showHideTransition="slide"
+					animated
+				/>
 				{cookieString && (
 					<WebView
 						ref={webViewRef}
 						sharedCookiesEnabled={true}
 						mixedContentMode="always"
-						source={{ uri: "https://dtsanalpos.com/payment" }}
+						source={{ uri: "https://dtsanalpos.com" }}
 						onMessage={handleWebViewLoad}
 						onNavigationStateChange={handleNavigationStateChange}
 						onShouldStartLoadWithRequest={() => true}
@@ -121,6 +112,7 @@ const MyWebView = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: "#7256E9",
 	},
 });
 
