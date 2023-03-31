@@ -5,7 +5,6 @@ import {
 	Alert,
 	Platform,
 	Linking,
-	Text,
 	View,
 	ActivityIndicator,
 } from "react-native";
