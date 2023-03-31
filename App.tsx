@@ -5,6 +5,9 @@ import {
 	Alert,
 	Platform,
 	Linking,
+	Text,
+	View,
+	ActivityIndicator,
 } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +19,8 @@ const MyWebView = () => {
 	const webViewRef = React.useRef<WebView>(null);
 	const [cookieString, setCookieString] = React.useState<any>(null);
 	const [latestVersion, setLatestVersion] = React.useState<any>(null);
+
+	const [visibleLoading, setVisibleLoading] = React.useState<boolean>(false);
 
 	const handleWebViewLoad = (event: WebViewMessageEvent) => {
 		AsyncStorage.setItem("cookies", event.nativeEvent.data);
@@ -85,6 +90,11 @@ const MyWebView = () => {
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
+				{visibleLoading && (
+					<View style={styles.loading}>
+						<ActivityIndicator size="large" color="#0000ff" />
+					</View>
+				)}
 				<StatusBar
 					backgroundColor="#7256E9"
 					hidden
@@ -102,6 +112,8 @@ const MyWebView = () => {
 						onShouldStartLoadWithRequest={() => true}
 						injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
 						onError={handleWebViewError}
+						onLoadStart={() => setVisibleLoading(true)}
+						onLoadEnd={() => setVisibleLoading(false)}
 					/>
 				)}
 			</SafeAreaView>
@@ -113,6 +125,18 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#7256E9",
+		position: "relative",
+	},
+	loading: {
+		height: "100%",
+		width: "100%",
+		position: "absolute",
+		top: 0,
+		left: 0,
+		backgroundColor: "rgba(0,0,0,0.2)",
+		zIndex: 10,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
 
