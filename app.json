@@ -7,15 +7,15 @@
 		"icon": "./assets/app-icon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/dtsplash.png",
+			"image": "./assets/splash.jpg",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#7256E9"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.distedavim.dtsanalpos",
-			"buildNumber": "19"
+			"buildNumber": "20"
 		},
 		"android": {
 			"adaptiveIcon": {
@@ -23,7 +23,7 @@
 				"backgroundColor": "#ffffff"
 			},
 			"package": "com.distedavim.dtsanalpos",
-			"versionCode": 19
+			"versionCode": 20
 		},
 		"web": {
 			"favicon": "./assets/app-icon.png"
