@@ -7,12 +7,15 @@ import {
 	Linking,
 	View,
 	ActivityIndicator,
+	TouchableOpacity,
+	Text,
 } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "react-native";
 import * as Application from "expo-application";
 import { useEffect } from "react";
+import { Svg, Path } from "react-native-svg";
 
 const MyWebView = () => {
 	const webViewRef = React.useRef<WebView>(null);
@@ -20,6 +23,9 @@ const MyWebView = () => {
 	const [latestVersion, setLatestVersion] = React.useState<any>(null);
 
 	const [visibleLoading, setVisibleLoading] = React.useState<boolean>(false);
+
+	const [backButtonVisible, setBackButtonVsisble] =
+		React.useState<boolean>(false);
 
 	const handleWebViewLoad = (event: WebViewMessageEvent) => {
 		AsyncStorage.setItem("cookies", event.nativeEvent.data);
@@ -51,6 +57,8 @@ const MyWebView = () => {
 		}
 	}, []);
 
+	console.log(backButtonVisible);
+
 	useEffect(() => {
 		if (!latestVersion) return;
 		if (latestVersion === Application.nativeApplicationVersion) return;
@@ -70,9 +78,12 @@ const MyWebView = () => {
 		]);
 	}, [latestVersion]);
 
-	const handleNavigationStateChange = async () => {
+	const handleNavigationStateChange = async (navState: any) => {
 		const webViewScript = `(function() {window.ReactNativeWebView.postMessage(document.cookie);})();`;
 		webViewRef.current?.injectJavaScript(webViewScript);
+
+		// if (navState.url.includes("dtsanalpos.com")) setBackButtonVsisble(true);
+		// else setBackButtonVsisble(false);
 	};
 
 	const handleWebViewError = () => {
@@ -93,6 +104,27 @@ const MyWebView = () => {
 					<View style={styles.loading}>
 						<ActivityIndicator size="large" color="#0000ff" />
 					</View>
+				)}
+				{backButtonVisible && (
+					<TouchableOpacity
+						style={{ position: "absolute", top: 25, left: 2, zIndex: 100 }}
+						onPress={() => {
+							webViewRef.current?.goBack();
+						}}
+					>
+						<Svg
+							width="48"
+							height="48"
+							viewBox="0 0 24 24"
+							stroke="#000000"
+							strokeWidth=".2"
+						>
+							<Path
+								fill="#ffffff"
+								d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+							/>
+						</Svg>
+					</TouchableOpacity>
 				)}
 				<StatusBar
 					backgroundColor="#7256E9"
