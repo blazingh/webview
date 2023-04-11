@@ -8,6 +8,7 @@ import {
 	View,
 	ActivityIndicator,
 	TouchableOpacity,
+	ImageBackground,
 	Text,
 } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
@@ -16,6 +17,7 @@ import { StatusBar } from "react-native";
 import * as Application from "expo-application";
 import { useEffect } from "react";
 import { Svg, Path } from "react-native-svg";
+import spalshscrenn from "./assets/splash.jpg";
 
 const MyWebView = () => {
 	const webViewRef = React.useRef<WebView>(null);
@@ -25,7 +27,7 @@ const MyWebView = () => {
 	const [visibleLoading, setVisibleLoading] = React.useState<boolean>(false);
 
 	const [backButtonVisible, setBackButtonVsisble] =
-		React.useState<boolean>(false);
+		React.useState<boolean>(true);
 
 	const handleWebViewLoad = (event: WebViewMessageEvent) => {
 		AsyncStorage.setItem("cookies", event.nativeEvent.data);
@@ -100,53 +102,63 @@ const MyWebView = () => {
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
-				{visibleLoading && (
-					<View style={styles.loading}>
-						<ActivityIndicator size="large" color="#0000ff" />
-					</View>
-				)}
-				{backButtonVisible && (
-					<TouchableOpacity
-						style={{ position: "absolute", top: 25, left: 2, zIndex: 100 }}
-						onPress={() => {
-							webViewRef.current?.goBack();
-						}}
-					>
-						<Svg
-							width="48"
-							height="48"
-							viewBox="0 0 24 24"
-							stroke="#000000"
-							strokeWidth=".2"
+				<ImageBackground
+					source={spalshscrenn}
+					style={styles.image}
+					resizeMethod="scale"
+					resizeMode="contain"
+				>
+					{visibleLoading && (
+						<View style={styles.loading}>
+							<ActivityIndicator size="large" color="#0000ff" />
+						</View>
+					)}
+					{backButtonVisible && (
+						<TouchableOpacity
+							style={{ position: "absolute", top: 25, left: 2, zIndex: 100 }}
+							onPress={() => {
+								webViewRef.current?.goBack();
+							}}
 						>
-							<Path
-								fill="#ffffff"
-								d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-							/>
-						</Svg>
-					</TouchableOpacity>
-				)}
-				<StatusBar
-					backgroundColor="#7256E9"
-					hidden
-					showHideTransition="slide"
-					animated
-				/>
-				{cookieString && (
-					<WebView
-						ref={webViewRef}
-						sharedCookiesEnabled={true}
-						mixedContentMode="always"
-						source={{ uri: "https://dtsanalpos.com" }}
-						onMessage={handleWebViewLoad}
-						onNavigationStateChange={handleNavigationStateChange}
-						onShouldStartLoadWithRequest={() => true}
-						injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
-						onError={handleWebViewError}
-						onLoadStart={() => setVisibleLoading(true)}
-						onLoadEnd={() => setVisibleLoading(false)}
+							<Svg
+								width="48"
+								height="48"
+								viewBox="0 0 24 24"
+								stroke="#000000"
+								strokeWidth=".2"
+							>
+								<Path
+									fill="#ffffff"
+									d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+								/>
+							</Svg>
+						</TouchableOpacity>
+					)}
+					<StatusBar
+						backgroundColor="#7256E9"
+						hidden
+						showHideTransition="slide"
+						animated
 					/>
-				)}
+					{cookieString && (
+						<WebView
+							style={{
+								backgroundColor: "transparent",
+							}}
+							ref={webViewRef}
+							sharedCookiesEnabled={true}
+							mixedContentMode="always"
+							source={{ uri: "https://dtsanalpos.com" }}
+							onMessage={handleWebViewLoad}
+							onNavigationStateChange={handleNavigationStateChange}
+							onShouldStartLoadWithRequest={() => true}
+							injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
+							onError={handleWebViewError}
+							onLoadStart={() => setVisibleLoading(true)}
+							onLoadEnd={() => setVisibleLoading(false)}
+						/>
+					)}
+				</ImageBackground>
 			</SafeAreaView>
 		</>
 	);
@@ -168,6 +180,11 @@ const styles = StyleSheet.create({
 		zIndex: 10,
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	image: {
+		flex: 1,
+		resizeMode: "contain",
+		justifyContent: "center",
 	},
 });
 
