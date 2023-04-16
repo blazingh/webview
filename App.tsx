@@ -36,6 +36,8 @@ const MyWebView = () => {
 	const setWebViewCookie = async () => {
 		const injectedJavaScript = `document.cookie = '${cookieString}';  true;`;
 		webViewRef.current?.injectJavaScript(injectedJavaScript);
+		const jsCode = `localStorage.setItem('cookiePopupClosed', 'true');`;
+		webViewRef.current.injectJavaScript(jsCode);
 	};
 
 	const setWebViewCookieString = `(${setWebViewCookie.toString()})();`;
@@ -58,8 +60,6 @@ const MyWebView = () => {
 				.catch((error) => console.error(error));
 		}
 	}, []);
-
-	console.log(backButtonVisible);
 
 	useEffect(() => {
 		if (!latestVersion) return;
@@ -86,6 +86,19 @@ const MyWebView = () => {
 
 		// if (navState.url.includes("dtsanalpos.com")) setBackButtonVsisble(true);
 		// else setBackButtonVsisble(false);
+	};
+
+	const setLocalStorage = () => {
+		const myData = {
+			key: "cookiePopupClosed",
+			value: "true",
+		};
+
+		const jsCode = `
+      localStorage.setItem('${myData.key}', '${myData.value}');
+    `;
+
+		webViewRef.current.injectJavaScript(jsCode);
 	};
 
 	const handleWebViewError = () => {
@@ -156,6 +169,7 @@ const MyWebView = () => {
 							onError={handleWebViewError}
 							onLoadStart={() => setVisibleLoading(true)}
 							onLoadEnd={() => setVisibleLoading(false)}
+							onLoad={() => setLocalStorage()}
 						/>
 					)}
 				</ImageBackground>
