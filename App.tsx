@@ -29,7 +29,11 @@ const MyWebView = () => {
 	const [backButtonVisible, setBackButtonVsisble] =
 		React.useState<boolean>(true);
 
-	const handleWebViewLoad = (event: WebViewMessageEvent) => {
+	const handleOnMessage = (event: WebViewMessageEvent) => {
+		if (event.nativeEvent.data === "INIT_NFC") {
+			// NFC is ready to be used
+			console.log("NFC is ready to be used");
+		}
 		AsyncStorage.setItem("cookies", event.nativeEvent.data);
 	};
 
@@ -37,7 +41,12 @@ const MyWebView = () => {
 		const injectedJavaScript = `document.cookie = '${cookieString}';  true;`;
 		webViewRef.current?.injectJavaScript(injectedJavaScript);
 		const jsCode = `localStorage.setItem('cookiePopupClosed', 'true');`;
-		webViewRef.current.injectJavaScript(jsCode);
+		webViewRef.current?.injectJavaScript(jsCode);
+	};
+
+	const handleNfc = (data: any) => {
+		// handle NFC data here
+		console.log("NFC data:", data);
 	};
 
 	const setWebViewCookieString = `(${setWebViewCookie.toString()})();`;
@@ -88,6 +97,41 @@ const MyWebView = () => {
 		// else setBackButtonVsisble(false);
 	};
 
+	const handleOnLoad = () => {
+		setLocalStorage();
+	};
+
+	const handleOnLoadEnd = () => {
+		setVisibleLoading(false);
+		injectNfcScript();
+	};
+
+	const injectNfcScript = () => {
+		const jsCode = `
+		// Find the NFC button element
+		const nfcButton = document.getElementById('nfc-mobile-btn');
+		
+		// Create a new button element
+		const button = document.createElement('button');
+		
+		// Set the button text and attributes
+		button.innerHTML = 'Scan Card With NFC';
+		button.setAttribute('type', 'button');
+		
+		// Add a click event listener to the button
+		button.addEventListener('click', () => {
+		  // Send a message back to the app
+		  window.ReactNativeWebView.postMessage('INIT_NFC');
+		});
+		
+		// Add the button to the NFC button div
+		nfcButton.appendChild(button);
+	  `;
+
+		// Inject the JavaScript code into the WebView
+		webViewRef.current?.injectJavaScript(jsCode);
+	};
+
 	const setLocalStorage = () => {
 		const myData = {
 			key: "cookiePopupClosed",
@@ -98,7 +142,7 @@ const MyWebView = () => {
       localStorage.setItem('${myData.key}', '${myData.value}');
     `;
 
-		webViewRef.current.injectJavaScript(jsCode);
+		webViewRef.current?.injectJavaScript(jsCode);
 	};
 
 	const handleWebViewError = () => {
@@ -161,15 +205,15 @@ const MyWebView = () => {
 							ref={webViewRef}
 							sharedCookiesEnabled={true}
 							mixedContentMode="always"
-							source={{ uri: "https://dtsanalpos.com" }}
-							onMessage={handleWebViewLoad}
+							source={{ uri: "https://betaapi.dtsanalpos.com" }}
+							onMessage={handleOnMessage}
 							onNavigationStateChange={handleNavigationStateChange}
 							onShouldStartLoadWithRequest={() => true}
 							injectedJavaScriptBeforeContentLoaded={setWebViewCookieString}
 							onError={handleWebViewError}
 							onLoadStart={() => setVisibleLoading(true)}
-							onLoadEnd={() => setVisibleLoading(false)}
-							onLoad={() => setLocalStorage()}
+							onLoadEnd={() => handleOnLoadEnd()}
+							onLoad={() => handleOnLoad()}
 						/>
 					)}
 				</ImageBackground>
