@@ -6,7 +6,15 @@
 		"orientation": "portrait",
 		"icon": "./assets/app-icon.png",
 		"userInterfaceStyle": "light",
-		"plugins": ["react-native-nfc-manager"],
+		"plugins": [
+			"react-native-nfc-manager",
+			[
+				"expo-tracking-transparency",
+				{
+					"userTrackingPermission": "SKIP"
+				}
+			]
+		],
 		"splash": {
 			"image": "./assets/splash.jpg",
 			"resizeMode": "contain",

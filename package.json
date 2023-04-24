@@ -1,22 +1,23 @@
 {
   "name": "webview",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-cookies/cookies": "^6.2.1",
-    "expo": "^48.0.11",
+    "expo": "~48.0.11",
     "expo-dev-client": "^2.2.1",
+    "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
+    "expo-tracking-transparency": "~3.0.3",
     "expo-web-browser": "~12.1.1",
     "react": "18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "0.71.6",
     "react-native-nfc-manager": "^3.14.2",
     "react-native-svg": "13.4.0",
     "react-native-webview": "11.26.0"

@@ -17,7 +17,9 @@ import { StatusBar } from "react-native";
 import * as Application from "expo-application";
 import { useEffect } from "react";
 import { Svg, Path } from "react-native-svg";
-import spalshscrenn from "./assets/splash.jpg";
+import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
+
+const spalshscrenn = require("./assets/splash.jpg");
 
 const MyWebView = () => {
 	const webViewRef = React.useRef<WebView>(null);
@@ -38,15 +40,13 @@ const MyWebView = () => {
 	};
 
 	const setWebViewCookie = async () => {
-		const injectedJavaScript = `document.cookie = '${cookieString}';  true;`;
+		const injectedJavaScript = `
+		(function() {
+		document.cookie = '${cookieString}';
+		localStorage.setItem('cookiePopupClosed', 'true')
+		;})();
+		`;
 		webViewRef.current?.injectJavaScript(injectedJavaScript);
-		const jsCode = `localStorage.setItem('cookiePopupClosed', 'true');`;
-		webViewRef.current?.injectJavaScript(jsCode);
-	};
-
-	const handleNfc = (data: any) => {
-		// handle NFC data here
-		console.log("NFC data:", data);
 	};
 
 	const setWebViewCookieString = `(${setWebViewCookie.toString()})();`;
@@ -68,6 +68,12 @@ const MyWebView = () => {
 				})
 				.catch((error) => console.error(error));
 		}
+		(async () => {
+			const { status } = await requestTrackingPermissionsAsync();
+			if (status === "granted") {
+				console.log("permision granted");
+			}
+		})();
 	}, []);
 
 	useEffect(() => {
@@ -103,33 +109,7 @@ const MyWebView = () => {
 
 	const handleOnLoadEnd = () => {
 		setVisibleLoading(false);
-		injectNfcScript();
-	};
-
-	const injectNfcScript = () => {
-		const jsCode = `
-		// Find the NFC button element
-		const nfcButton = document.getElementById('nfc-mobile-btn');
-		
-		// Create a new button element
-		const button = document.createElement('button');
-		
-		// Set the button text and attributes
-		button.innerHTML = 'Scan Card With NFC';
-		button.setAttribute('type', 'button');
-		
-		// Add a click event listener to the button
-		button.addEventListener('click', () => {
-		  // Send a message back to the app
-		  window.ReactNativeWebView.postMessage('INIT_NFC');
-		});
-		
-		// Add the button to the NFC button div
-		nfcButton.appendChild(button);
-	  `;
-
-		// Inject the JavaScript code into the WebView
-		webViewRef.current?.injectJavaScript(jsCode);
+		setLocalStorage();
 	};
 
 	const setLocalStorage = () => {
@@ -139,7 +119,7 @@ const MyWebView = () => {
 		};
 
 		const jsCode = `
-      localStorage.setItem('${myData.key}', '${myData.value}');
+		(function() {localStorage.setItem('${myData.key}', '${myData.value}');})();
     `;
 
 		webViewRef.current?.injectJavaScript(jsCode);
@@ -147,12 +127,12 @@ const MyWebView = () => {
 
 	const handleWebViewError = () => {
 		webViewRef.current?.injectJavaScript(`
+		(function() {
+		window.location.href = 'https://dtsanalpos.com';
 		document.cookie.split(';').forEach(function(c) {
 			document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-		});
-		`);
-		webViewRef.current?.injectJavaScript(`
-		window.location.href = 'https://dtsanalpos.com';
+		})
+		;})();
 		  `);
 	};
 
