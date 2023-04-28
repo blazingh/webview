@@ -17,7 +17,7 @@ import { StatusBar } from "react-native";
 import * as Application from "expo-application";
 import { useEffect } from "react";
 import { Svg, Path } from "react-native-svg";
-import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
+// import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 
 const spalshscrenn = require("./assets/splash.jpg");
 
@@ -68,12 +68,12 @@ const MyWebView = () => {
 				})
 				.catch((error) => console.error(error));
 		}
-		(async () => {
-			const { status } = await requestTrackingPermissionsAsync();
-			if (status === "granted") {
-				console.log("permision granted");
-			}
-		})();
+		// (async () => {
+		// 	const { status } = await requestTrackingPermissionsAsync();
+		// 	if (status === "granted") {
+		// 		console.log("permision granted");
+		// 	}
+		// })();
 	}, []);
 
 	useEffect(() => {
@@ -185,7 +185,7 @@ const MyWebView = () => {
 							ref={webViewRef}
 							sharedCookiesEnabled={true}
 							mixedContentMode="always"
-							source={{ uri: "https://betaapi.dtsanalpos.com" }}
+							source={{ uri: "https://dtsanalpos.com" }}
 							onMessage={handleOnMessage}
 							onNavigationStateChange={handleNavigationStateChange}
 							onShouldStartLoadWithRequest={() => true}
