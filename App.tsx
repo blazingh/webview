@@ -26,6 +26,8 @@ const MyWebView = () => {
 	const [cookieString, setCookieString] = React.useState<any>(null);
 	const [latestVersion, setLatestVersion] = React.useState<any>(null);
 
+	const [loaded, setLoaded] = React.useState<boolean>(false);
+
 	const [visibleLoading, setVisibleLoading] = React.useState<boolean>(false);
 
 	const [backButtonVisible, setBackButtonVsisble] =
@@ -89,7 +91,7 @@ const MyWebView = () => {
 				text: "Şimdi güncelle",
 				onPress: () =>
 					Linking.openURL(
-						"https://apps.apple.com/tr/app/dtsanalpos/id6446242806?l=tr",
+						"https://apps.apple.com/tr/app/dtsanalpos/id6446242806?l=tr"
 					),
 			},
 		]);
@@ -110,6 +112,7 @@ const MyWebView = () => {
 	const handleOnLoadEnd = () => {
 		setVisibleLoading(false);
 		setLocalStorage();
+		setLoaded(true);
 	};
 
 	const setLocalStorage = () => {
@@ -146,7 +149,7 @@ const MyWebView = () => {
 					resizeMode="contain"
 				>
 					{visibleLoading && (
-						<View style={styles.loading}>
+						<View style={loaded ? styles.loading : styles.loadingNoBg}>
 							<ActivityIndicator size="large" color="#0000ff" />
 						</View>
 					)}
@@ -215,6 +218,17 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		backgroundColor: "rgba(0,0,0,0.2)",
+		zIndex: 10,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	loadingNoBg: {
+		height: "100%",
+		width: "100%",
+		position: "absolute",
+		top: 0,
+		left: 0,
+		backgroundColor: "rgba(0,0,0,0)",
 		zIndex: 10,
 		justifyContent: "center",
 		alignItems: "center",
