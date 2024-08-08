@@ -30,8 +30,6 @@ const MyWebView = () => {
 
 	const [visibleLoading, setVisibleLoading] = React.useState<boolean>(false);
 
-	const [backButtonVisible, setBackButtonVsisble] =
-		React.useState<boolean>(true);
 
 	const handleOnMessage = (event: WebViewMessageEvent) => {
 		if (event.nativeEvent.data === "INIT_NFC") {
@@ -153,27 +151,6 @@ const MyWebView = () => {
 							<ActivityIndicator size="large" color="#0000ff" />
 						</View>
 					)}
-					{backButtonVisible && (
-						<TouchableOpacity
-							style={{ position: "absolute", top: 25, left: 2, zIndex: 100 }}
-							onPress={() => {
-								webViewRef.current?.goBack();
-							}}
-						>
-							<Svg
-								width="48"
-								height="48"
-								viewBox="0 0 24 24"
-								stroke="#000000"
-								strokeWidth=".2"
-							>
-								<Path
-									fill="#ffffff"
-									d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-								/>
-							</Svg>
-						</TouchableOpacity>
-					)}
 					<StatusBar
 						backgroundColor="#7256E9"
 						hidden
@@ -188,7 +165,7 @@ const MyWebView = () => {
 							ref={webViewRef}
 							sharedCookiesEnabled={true}
 							mixedContentMode="always"
-							source={{ uri: "https://dtsanalpos.com" }}
+							source={{ uri: "https://distedavim.com" }}
 							onMessage={handleOnMessage}
 							onNavigationStateChange={handleNavigationStateChange}
 							onShouldStartLoadWithRequest={() => true}
